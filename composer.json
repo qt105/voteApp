@@ -1,0 +1,16 @@
+{
+    "name": "qt105/vote-app",
+    "description": "A PHP vote application",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "App\\VoteApp\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "qt105"
+        }
+    ],
+    "require": {}
+}
