@@ -24,3 +24,9 @@
         <a href="index.php">Retour à l'index</a>
     </body>
 </html>
+
+<?php
+
+require_once __DIR__ . "/../vendor/autoload.php";
+use App\VoteApp\ClassUser;
+

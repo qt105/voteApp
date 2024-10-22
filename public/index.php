@@ -10,20 +10,24 @@
 
     require_once __DIR__ . "/../vendor/autoload.php";
 
-    use App\VoteApp\ClassA;
-    use App\VoteApp\ClassB;
+    //use App\VoteApp\ClassA;
+    //use App\VoteApp\ClassB;
     use App\VoteApp\ClassUser;
 
-    $a = new ClassA();
-    $b = new ClassA();
-    $c = new ClassB();
+    //$a = new ClassA();
+    //$b = new ClassA();
+    //$c = new ClassB();
 
-    $result = $a->f(36);
-    echo "<p>".$result."</p>";
-    $result2 = $c->f(36);
-    echo "<p>".$result2."</p>";
+    //$result = $a->f(36);
+    //echo "<p>".$result."</p>";
+    //$result2 = $c->f(36);
+    //echo "<p>".$result2."</p>";
 
-    $user = new ClassUser("John", "Doe", "johndoe", "john.doe@example.com", "securePassword123!", "admin");
+    $user = new ClassUser(username: "m.cadennes", password: "montreuil");
+
+    $user->setFirstName("Michel")
+         ->setLastName("Cadennes")
+         ->setEmail("michel.cadennes@sens-commun.fr");
 
     require_once "../templates/profile.html.php";
     ?>

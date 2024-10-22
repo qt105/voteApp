@@ -4,93 +4,85 @@ namespace App\VoteApp;
 
 class ClassUser
 {
+    const C = 100;
+
+    /**
+     * @var string $nb Un nombre dony j'ai besoindans mon app
+     */
     private string $firstName;
     private string $lastName;
     private string $username;
-    private string $email;
     private string $password;
+    private string $email;
     private string $role;
 
-public function __construct(
-    string $firstName = "John",
-    string $lastName = "Doe",
-    string $username = "JohnDoe1234",
-    string $email = "john@doe.com",
-    string $password = "password1234",
-    string $role = "admin"
-)
-{
-    $this->firstName = $firstName;
-    $this->lastName = $lastName;
-    $this->username = $username;
-    $this->email = $email;
-    $this->password = $password;
-    $this->role = $role;
-}
 
-/*First Name functions*/
-public function getFirstName(): string
-{
-    return $this->firstName;
-}
+    public function __construct(string $username, string $password, ?string $email = null)
+    {
+        $this->username = $username;
+        $this->password = $password;
+        $this->email = $email ?? '';
+    }
+    /**
+     * Une fonction qui retourne la valeur d'une propriété
+     *
+     * @param int $property le nom de la propriété
+     *
+     * @return mixed
+     */
+    public function __get(string $property): string
+    {
+        return $this->$property;
+    }
 
-public function setFirstName(string $firstName): void
-{
-    $this->firstName = $firstName;
-}
+    public function getFirstName(): string
+    {
+        return $this->firstName;
+    }
 
-/*Last Name functions*/
-public function getLastName(): string
-{
-    return $this->lastName;
-}
+    public function setFirstName(string $value): self
+    {
+        $this->firstName = $value;
 
-public function setLastName(string $lastName): void
-{
-    $this->lastName = $lastName;
-}
+        return $this;
+    }
 
-/*Username functions */
-public function getUsername(): string
-{
-    return $this->username;
-}
+    public function getLastName(): string
+    {
+        return $this->lastName;
+    }
 
-public function setUsername(string $username): void
-{
-    $this->username = $username;
-}
+    public function setLastName(string $value): self
+    {
+        $this->lastName = $value;
 
-/*Email functions */
-public function getEmail(): string
-{
-    return $this->email;
-}
+        return $this;
+    }
 
-public function setEmail(string $email): void
-{
-    $this->email = $email;
-}
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
 
-/*Role functions */
-public function getRole(): string
-{
-    return $this->role;
-}
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
 
-public function setRole(string $role): void
-{
-    $this->role = $role;
-}
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+        return $this;
+    }
 
-/*password functions */
-public function getPassword(): string
-{
-    return $this->password;
-}
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
 
-public function setPassword(string $password): void
-{
-    $this->password = $password;
-}
+    public function getRole(): string
+    {
+        return $this->role;
+    }
+    
 }

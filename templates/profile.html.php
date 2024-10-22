@@ -8,7 +8,6 @@
             <div>
                 <p>Username: <?= $user->getUsername(); ?></p>
                 <p>Email: <?= $user->getEmail(); ?></p>
-                <p>Role: <?= $user->getRole(); ?></p>
             </div>
         </main>
     </body>
