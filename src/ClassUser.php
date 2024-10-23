@@ -80,6 +80,12 @@ class ClassUser
         return $this->password;
     }
 
+    public function setRole(string $role): self
+    {
+        $this->role = $role;
+        return $this;
+    }
+
     public function getRole(): string
     {
         return $this->role;

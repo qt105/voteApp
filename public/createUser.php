@@ -14,9 +14,14 @@ if (empty($_POST)) {
 
     $user->setFirstName($_POST['firstName'])
          ->setLastName($_POST['lastName'])
+         ->setRole("USER")
          ->setEmail($_POST['email']);
 
-$_SESSION[$user->getUsername()] = $user;
+    $_SESSION['user'] = serialize($user);
+
+    var_dump($_SESSION);
+
+    die;
 
     require_once "../templates/profile.html.php"; 
 }

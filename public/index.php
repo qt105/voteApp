@@ -8,6 +8,7 @@
 <body>
     <?php
     session_start();
+    
     require_once __DIR__ . "/../templates/header.html.php";
 
     require_once __DIR__ . "/../vendor/autoload.php";
@@ -25,10 +26,14 @@
     //$result2 = $c->f(36);
     //echo "<p>".$result2."</p>";
 
-    if (empty($_POST)) {
-        echo "<h2> Pas d'utilisateur </h2>";
-    } else {
+    if (isset($_SESSION['user'])) {
+    
+        $user = unserialize($_SESSION['user']);
+        //var_dump($user); die;
+
         require_once "../templates/profile.html.php"; 
+    } else {
+        echo "<h2>Pas d'utilisateur</h2>";
     }
     
     ?>
