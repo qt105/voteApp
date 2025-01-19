@@ -15,18 +15,7 @@
 
     require_once __DIR__ . "/../vendor/autoload.php";
 
-    //use App\VoteApp\ClassA;
-    //use App\VoteApp\ClassB;
     use App\VoteApp\ClassUser;
-
-    //$a = new ClassA();
-    //$b = new ClassA();
-    //$c = new ClassB();
-
-    //$result = $a->f(36);
-    //echo "<p>".$result."</p>";
-    //$result2 = $c->f(36);
-    //echo "<p>".$result2."</p>";
 
     if (isset($_SESSION['user'])) {
     
