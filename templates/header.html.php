@@ -1,5 +1,6 @@
 <header>
-    <a href="index.php">INDEX</a>
+    <a href="index.php">HOME</a>
     <a href="createUser.php">REGISTER</a>
     <a href="loginUser.php">LOGIN</a>
+    <a href="profile.php">PROFILE</a>
 </header>

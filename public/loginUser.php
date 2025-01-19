@@ -10,28 +10,31 @@ use App\VoteApp\ClassUser;
 if (empty($_POST)) {
     require_once "../templates/loginFormUser.html.php";
 } else {
-
     $user = new ClassUser(
-        username: $_POST['username'], 
-        password: $_POST['password']);
+        username: $_POST['username'],
+        password: $_POST['password']
+    );
 
-        $stmtUsername = $pdo->prepare("SELECT COUNT(*) FROM users WHERE username = :username");
-        $stmtUsername->execute(['username' => $user->getUsername()]);
-        $usernameExists = $stmtUsername->fetchColumn();
-    
-        if (!$usernameExists) {
-            echo "Erreur: nom d'utilisateur incorrect '" . htmlspecialchars($user->getUsername(), ENT_QUOTES, 'UTF-8') . "' n'existe pas";
-            require_once "../templates/loginFormUser.html.php";
-            exit;
-        }
-    
-        $stmtPassword = $pdo->prepare("SELECT COUNT(*) FROM users WHERE username = :username");
-        $stmtPassword->execute(['username' => $user->getPassword()]);
-        $password = $stmtPassword;
-    
-        if () {
-            echo "Erreur: nom d'utilisateur incorrect '" . htmlspecialchars($user->getUsername(), ENT_QUOTES, 'UTF-8') . "' n'existe pas";
-            require_once "../templates/loginFormUser.html.php";
-            exit;
-        }
+    // Check if the username exists in the database
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE username = :username");
+    $stmt->execute(['username' => $user->getUsername()]);
+    $dbUser = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$dbUser) {
+        echo "Erreur : Nom d'utilisateur ou mot de passe incorrect.";
+        require_once "../templates/loginFormUser.html.php";
+        exit;
+    }
+
+    // Verify the submitted password against the hashed password
+    if (!password_verify($user->getPassword(), $dbUser['password'])) {
+        echo "Erreur : Nom d'utilisateur ou mot de passe incorrect.";
+        require_once "../templates/loginFormUser.html.php";
+        exit;
+    }
+
+    // Save user ID in session and redirect to profile page
+    $_SESSION['user_id'] = $dbUser['id'];
+    header("Location: profile.php");
+    exit;
 }
