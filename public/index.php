@@ -27,9 +27,32 @@
         echo "<h2>Pas d'utilisateur</h2>";
     }
     
-    ?>
-    <a href="new_user.php">User Form</a>
-    <a href="createUser.php">Create user</a>
+$query = "SELECT * FROM forms WHERE start_date <= NOW() AND end_date >= NOW() ORDER BY start_date DESC";
+$stmt = $pdo->prepare($query);
+$stmt->execute();
+$openForms = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
+
+<body>
+    <main>
+        <?php if ($openForms): ?>
+            <ul>
+                <?php foreach ($openForms as $form): ?>
+                    <li>
+                        <h2><?= htmlspecialchars($form['question']) ?></h2>
+                        <p><?= htmlspecialchars($form['description']) ?></p>
+                        <p><strong>Début:</strong> <?= $form['start_date'] ?> <strong>Fin:</strong> <?= $form['end_date'] ?></p>
+                        <p><strong>Durée du vote:</strong> <?= $form['voting_duration'] ?> minutes</p>
+                        <a href="vote.php?id=<?= $form['id'] ?>">Participer au vote</a>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        <?php else: ?>
+            <p>Aucun vote ouvert pour le moment.</p>
+        <?php endif; ?>
+    </main>
+</body>
+</html>
 </body>
 </html>
 
