@@ -18,6 +18,18 @@
             }
         }
     </script>
+    <?php
+    include __DIR__ . "/../config/database.php";
+    require_once __DIR__ . "/../templates/header.html.php";
+    require_once __DIR__ . "/../vendor/autoload.php";
+    use App\VoteApp\ClassUser;
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Traitez les données ici
+        var_dump($_REQUEST);
+        // Vous pouvez également valider les dates et gérer la logique de vote ici
+    }
+    ?>
 </head>
 <body>
     <form method="POST" action="votre_script.php">
@@ -63,18 +75,5 @@
 
         <button type="submit">Créer le vote</button>
     </form>
-
-    <?php
-    include __DIR__ . "/../config/database.php";
-    require_once __DIR__ . "/../templates/header.html.php";
-    require_once __DIR__ . "/../vendor/autoload.php";
-    use App\VoteApp\ClassUser;
-
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // Traitez les données ici
-        var_dump($_REQUEST);
-        // Vous pouvez également valider les dates et gérer la logique de vote ici
-    }
-    ?>
 </body>
 </html>
