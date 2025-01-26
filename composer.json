@@ -1,9 +1,9 @@
 {
-    "name": "qmire/vote-app",
+    "name": "app/vote-app",
     "type": "project",
     "autoload": {
         "psr-4": {
-            "Qmire\\VoteApp\\": "src/"
+            "App\\VoteApp\\": "src/"
         }
     },
     "authors": [

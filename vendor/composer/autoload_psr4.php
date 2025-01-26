@@ -6,5 +6,5 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Qmire\\VoteApp\\' => array($baseDir . '/src'),
+    'App\\VoteApp\\' => array($baseDir . '/src'),
 );

@@ -8,7 +8,7 @@ define("DB_NAME", "voteApp_DB");
 /* Database User */
 define("DB_USER", "root");
 /* Database User Password */
-define("DB_PASS", "root");
+define("DB_PASS", "1328");
 
 try {
     $pdo = new PDO(

@@ -7,14 +7,14 @@ namespace Composer\Autoload;
 class ComposerStaticInit1c7de2cdafb99f4310b6590047bbed0f
 {
     public static $prefixLengthsPsr4 = array (
-        'Q' => 
+        'A' => 
         array (
-            'Qmire\\VoteApp\\' => 14,
+            'App\\VoteApp\\' => 12,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'Qmire\\VoteApp\\' => 
+        'App\\VoteApp\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
         ),
