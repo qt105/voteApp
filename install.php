@@ -1,6 +1,4 @@
 <?php
-
-// Check for required PHP extensions
 if (!extension_loaded('pdo')) {
     die("ERROR: PDO extension is not loaded.\n" .
         "Please enable it in your php.ini file or install it using:\n" .
@@ -20,7 +18,6 @@ if (!extension_loaded('pdo_mysql')) {
 try {
     require_once __DIR__ . "/config/database.php";
 
-    // Create users table if it doesn't exist
     $pdo->exec("CREATE TABLE IF NOT EXISTS `users` (
         `id` int unsigned NOT NULL AUTO_INCREMENT,
         `username` tinytext NOT NULL,
@@ -33,7 +30,6 @@ try {
         PRIMARY KEY (`id`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci");
 
-    // Create consultations table
     $pdo->exec("CREATE TABLE IF NOT EXISTS `consultations` (
         `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
         `title` VARCHAR(255) NOT NULL,
@@ -48,7 +44,6 @@ try {
         FOREIGN KEY (`creator_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci");
 
-    // Create choices table
     $pdo->exec("CREATE TABLE IF NOT EXISTS `choices` (
         `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
         `consultation_id` INT UNSIGNED NOT NULL,
@@ -58,7 +53,6 @@ try {
         FOREIGN KEY (`consultation_id`) REFERENCES `consultations`(`id`) ON DELETE CASCADE
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci");
 
-    // Create votes table
     $pdo->exec("CREATE TABLE IF NOT EXISTS `votes` (
         `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
         `consultation_id` INT UNSIGNED NOT NULL,
@@ -70,7 +64,6 @@ try {
         UNIQUE KEY `unique_vote` (`consultation_id`, `voter_id`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci");
 
-    // Create vote_details table for Condorcet method
     $pdo->exec("CREATE TABLE IF NOT EXISTS `vote_details` (
         `vote_id` INT UNSIGNED NOT NULL,
         `winner_choice_id` INT UNSIGNED NOT NULL,
@@ -81,7 +74,6 @@ try {
         PRIMARY KEY (`vote_id`, `winner_choice_id`, `loser_choice_id`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci");
 
-    // Create default admin user if it doesn't exist
     $adminPassword = password_hash('admin123', PASSWORD_DEFAULT);
     $stmt = $pdo->prepare("INSERT INTO users (username, password, email, firstName, lastName, role, birth_date) 
                           SELECT 'admin', :password, 'admin@example.com', 'Admin', 'User', 'admin', '2000-01-01'

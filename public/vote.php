@@ -15,7 +15,6 @@ if (!isset($_GET['id'])) {
 
 $consultationId = $_GET['id'];
 
-// Fetch consultation and choices
 $stmt = $pdo->prepare("
     SELECT c.*, 
            (SELECT COUNT(*) FROM votes v WHERE v.consultation_id = c.id AND v.voter_id = ?) as has_voted
@@ -39,12 +38,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $pdo->beginTransaction();
         
-        // Create vote record
         $stmt = $pdo->prepare("INSERT INTO votes (consultation_id, voter_id) VALUES (?, ?)");
         $stmt->execute([$consultationId, $_SESSION['user_id']]);
         $voteId = $pdo->lastInsertId();
-        
-        // Store preferences
+
         $rankings = $_POST['rankings'];
         for ($i = 0; $i < count($rankings); $i++) {
             for ($j = $i + 1; $j < count($rankings); $j++) {

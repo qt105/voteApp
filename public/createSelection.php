@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// Redirect if not logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: loginUser.php");
     exit;
@@ -17,7 +16,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $pdo->beginTransaction();
 
-        // Insert consultation
         $stmt = $pdo->prepare("
             INSERT INTO consultations (
                 title, description, creator_id, start_date, end_date, status
@@ -33,7 +31,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         $consultationId = $pdo->lastInsertId();
 
-        // Insert choices
         $stmt = $pdo->prepare("
             INSERT INTO choices (consultation_id, title, description)
             VALUES (?, ?, ?)
@@ -115,7 +112,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="mb-4">
                     <h2 class="text-xl font-bold mb-4">Options</h2>
                     <div id="choicesContainer">
-                        <!-- Initial choice fields will be added here -->
                     </div>
                     <button type="button" onclick="addChoice()"
                             class="mt-2 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
@@ -162,7 +158,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             choiceCount++;
         }
 
-        // Add initial choices
         addChoice();
         addChoice();
     </script>

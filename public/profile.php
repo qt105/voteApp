@@ -3,28 +3,23 @@ session_start();
 
 require_once __DIR__ . "/../templates/header.html.php";
 
-// Redirect to login page if the user is not logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: loginUser.php");
     exit;
 }
 
-// Include the database connection
 include __DIR__ . "/../config/database.php";
 
-// Fetch the user's information from the database
 $stmt = $pdo->prepare("SELECT * FROM users WHERE id = ?");
 $stmt->execute([$_SESSION['user_id']]);
 $user = $stmt->fetch();
 
-// If no user is found, log out and redirect to login
 if (!$user) {
     session_destroy();
     header("Location: loginUser.php");
     exit;
 }
 
-// Fetch user's consultations (created)
 $stmt = $pdo->prepare("
     SELECT c.*, 
            (SELECT COUNT(*) FROM votes v WHERE v.consultation_id = c.id) as vote_count
@@ -35,7 +30,6 @@ $stmt = $pdo->prepare("
 $stmt->execute([$_SESSION['user_id']]);
 $createdConsultations = $stmt->fetchAll();
 
-// Fetch consultations where user has voted
 $stmt = $pdo->prepare("
     SELECT c.*, v.created_at as voted_at
     FROM consultations c

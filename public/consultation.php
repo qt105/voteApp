@@ -10,7 +10,6 @@ if (!isset($_GET['id'])) {
 
 $consultationId = $_GET['id'];
 
-// Fetch consultation details
 $stmt = $pdo->prepare("
     SELECT c.*, u.username as creator_name,
            (SELECT COUNT(*) FROM votes v WHERE v.consultation_id = c.id) as vote_count,
@@ -27,7 +26,6 @@ if (!$consultation) {
     exit;
 }
 
-// Fetch choices
 $stmt = $pdo->prepare("SELECT * FROM choices WHERE consultation_id = ?");
 $stmt->execute([$consultationId]);
 $choices = $stmt->fetchAll();

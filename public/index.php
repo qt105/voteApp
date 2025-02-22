@@ -3,7 +3,6 @@ session_start();
 require_once __DIR__ . "/../templates/header.html.php";
 require_once __DIR__ . "/../config/database.php";
 
-// Fetch active consultations
 $stmt = $pdo->query("
     SELECT c.*, u.username as creator_name, 
            (SELECT COUNT(*) FROM votes v WHERE v.consultation_id = c.id) as vote_count

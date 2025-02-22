@@ -15,7 +15,6 @@ if (empty($_POST)) {
         password: $_POST['password']
     );
 
-    // Check if the username exists in the database
     $stmt = $pdo->prepare("SELECT * FROM users WHERE username = :username");
     $stmt->execute(['username' => $user->getUsername()]);
     $dbUser = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -26,14 +25,12 @@ if (empty($_POST)) {
         exit;
     }
 
-    // Verify the submitted password against the hashed password
     if (!password_verify($user->getPassword(), $dbUser['password'])) {
         echo "Erreur : Nom d'utilisateur ou mot de passe incorrect.";
         require_once "../templates/loginFormUser.html.php";
         exit;
     }
 
-    // Save user ID in session and redirect to profile page
     $_SESSION['user_id'] = $dbUser['id'];
     $_SESSION['role'] = $dbUser['role'];
     header("Location: profile.php");

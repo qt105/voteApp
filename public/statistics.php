@@ -3,13 +3,11 @@ session_start();
 require_once __DIR__ . "/../templates/header.html.php";
 require_once __DIR__ . "/../config/database.php";
 
-// Vérifier si l'utilisateur est un administrateur
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     header("Location: loginUser.php");
     exit;
 }
 
-// Récupérer les statistiques
 $mostParticipatedConsultations = $pdo->query("
     SELECT c.title, COUNT(v.id) as participant_count
     FROM consultations c
