@@ -7,7 +7,7 @@ class ClassUser
     const C = 100;
 
     /**
-     * @var string $nb Un nombre dony j'ai besoindans mon app
+     * @var string $nb Un nombre dony j'ai besoin dans mon app
      */
     private string $firstName;
     private string $lastName;
@@ -91,4 +91,12 @@ class ClassUser
         return $this->role;
     }
     
+    public function setBirthDate($birthDate) {
+        $this->birth_date = $birthDate;
+        return $this;
+    }
+    
+    public function getBirthDate() {
+        return $this->birth_date;
+    }
 }

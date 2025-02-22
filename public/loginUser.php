@@ -35,6 +35,7 @@ if (empty($_POST)) {
 
     // Save user ID in session and redirect to profile page
     $_SESSION['user_id'] = $dbUser['id'];
+    $_SESSION['role'] = $dbUser['role'];
     header("Location: profile.php");
     exit;
 }

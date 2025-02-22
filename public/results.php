@@ -10,7 +10,6 @@ if (!isset($_GET['id'])) {
 
 $consultationId = $_GET['id'];
 
-// Fetch consultation details
 $stmt = $pdo->prepare("
     SELECT c.*, u.username as creator_name,
            (SELECT COUNT(*) FROM votes v WHERE v.consultation_id = c.id) as total_votes
@@ -26,18 +25,22 @@ if (!$consultation) {
     exit;
 }
 
-// Fetch choices
 $stmt = $pdo->prepare("SELECT * FROM choices WHERE consultation_id = ?");
 $stmt->execute([$consultationId]);
 $choices = $stmt->fetchAll();
 
-// Calculate Condorcet winner
-$matrix = [];
-foreach ($choices as $choice) {
-    $matrix[$choice->id] = array_fill(0, count($choices), 0);
+if (!$choices) {
+    echo "<p>Aucune option trouvée pour cette consultation.</p>";
+    exit;
 }
 
-// Fill the preference matrix
+$matrix = [];
+foreach ($choices as $choice) {
+    foreach ($choices as $opponent) {
+        $matrix[$choice->id][$opponent->id] = 0;
+    }
+}
+
 $stmt = $pdo->prepare("
     SELECT winner_choice_id, loser_choice_id, COUNT(*) as count
     FROM vote_details
@@ -48,10 +51,11 @@ $stmt->execute([$consultationId]);
 $preferences = $stmt->fetchAll();
 
 foreach ($preferences as $pref) {
-    $matrix[$pref->winner_choice_id][$pref->loser_choice_id] = $pref->count;
+    if (isset($matrix[$pref->winner_choice_id]) && isset($matrix[$pref->loser_choice_id])) {
+        $matrix[$pref->winner_choice_id][$pref->loser_choice_id] = $pref->count;
+    }
 }
 
-// Find Condorcet winner
 $winner = null;
 $choiceScores = [];
 
@@ -59,8 +63,13 @@ foreach ($choices as $choice) {
     $wins = 0;
     foreach ($choices as $opponent) {
         if ($choice->id !== $opponent->id) {
-            if ($matrix[$choice->id][$opponent->id] > $matrix[$opponent->id][$choice->id]) {
-                $wins++;
+            if (
+                isset($matrix[$choice->id][$opponent->id]) && 
+                isset($matrix[$opponent->id][$choice->id])
+            ) {
+                if ($matrix[$choice->id][$opponent->id] > $matrix[$opponent->id][$choice->id]) {
+                    $wins++;
+                }
             }
         }
     }
@@ -96,7 +105,7 @@ foreach ($choices as $choice) {
                 </div>
             <?php else: ?>
                 <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-4">
-                    <p>Pas de gagnant de Condorcet clair (paradoxe de Condorcet)</p>
+                    <p>Pas de gagnant de Condorcet clair</p>
                 </div>
             <?php endif; ?>
 
@@ -118,14 +127,10 @@ foreach ($choices as $choice) {
                                 <td class="border p-2 font-bold"><?= htmlspecialchars($choice->title) ?></td>
                                 <?php foreach ($choices as $opponent): ?>
                                     <td class="border p-2 text-center">
-                                        <?php if ($choice->id === $opponent->id): ?>
-                                            -
-                                        <?php else: ?>
-                                            <?= $matrix[$choice->id][$opponent->id] ?>
-                                        <?php endif; ?>
+                                        <?= ($choice->id === $opponent->id) ? '-' : ($matrix[$choice->id][$opponent->id] ?? 0) ?>
                                     </td>
                                 <?php endforeach; ?>
-                                <td class="border p-2 text-center"><?= $choiceScores[$choice->id] ?></td>
+                                <td class="border p-2 text-center"><?= $choiceScores[$choice->id] ?? 0 ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -134,4 +139,4 @@ foreach ($choices as $choice) {
         </div>
     </div>
 </body>
-</html> 
+</html>

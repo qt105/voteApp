@@ -17,6 +17,10 @@
                 <label for="lastName" class="block text-gray-700 text-sm font-bold mb-2">Nom de famille</label>
                 <input type="text" name="lastName" id="lastName" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
             </div>
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="birth_date">Date de naissance</label>
+                <input type="date" id="birth_date" name="birth_date" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
             <div class="mb-4">
                 <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Adresse Mail</label>
                 <input type="email" name="email" id="email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>

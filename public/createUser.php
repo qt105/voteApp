@@ -10,8 +10,7 @@ use App\VoteApp\ClassUser;
 if (empty($_POST)) {
     require_once "../templates/formUser.html.php";
 } else {
-    // Validation des données
-    if (empty($_POST['username']) || empty($_POST['password']) || empty($_POST['firstName']) || empty($_POST['lastName']) || empty($_POST['email'])) {
+    if (empty($_POST['username']) || empty($_POST['password']) || empty($_POST['firstName']) || empty($_POST['lastName']) || empty($_POST['email']) || empty($_POST['birth_date'])) {
         echo "Erreur : Tous les champs sont obligatoires.";
         require_once "../templates/formUser.html.php";
         exit;
@@ -31,9 +30,9 @@ if (empty($_POST)) {
     $user->setFirstName($_POST['firstName'])
          ->setLastName($_POST['lastName'])
          ->setRole("user")
-         ->setEmail($_POST['email']);
+         ->setEmail($_POST['email'])
+         ->setBirthDate($_POST['birth_date']);
 
-    // Vérification de l'unicité du nom d'utilisateur et de l'email
     $stmtUsername = $pdo->prepare("SELECT COUNT(*) FROM users WHERE username = :username");
     $stmtUsername->execute(['username' => $user->getUsername()]);
     if ($stmtUsername->fetchColumn()) {
@@ -50,11 +49,10 @@ if (empty($_POST)) {
         exit;
     }
 
-    // Hachage du mot de passe et insertion dans la base de données
     $hashedPassword = password_hash($user->getPassword(), PASSWORD_DEFAULT);
 
     try {
-        $stmt = $pdo->prepare("INSERT INTO users (username, password, firstName, lastName, email, role) VALUES (:username, :password, :firstName, :lastName, :email, :role)");
+        $stmt = $pdo->prepare("INSERT INTO users (username, password, firstName, lastName, email, role, birth_date) VALUES (:username, :password, :firstName, :lastName, :email, :role, :birth_date)");
         $stmt->execute([
             'username' => $user->getUsername(),
             'password' => $hashedPassword,
@@ -62,9 +60,9 @@ if (empty($_POST)) {
             'lastName' => $user->getLastName(),
             'email' => $user->getEmail(),
             'role' => $user->getRole(),
+            'birth_date' => $user->getBirthDate()
         ]);
 
-        // Enregistrement de l'utilisateur dans la session et redirection
         $_SESSION['user_id'] = $pdo->lastInsertId();
         header("Location: profile.php");
         exit;

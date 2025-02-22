@@ -28,6 +28,7 @@ try {
         `email` tinytext,
         `lastName` tinytext,
         `firstName` tinytext,
+        `birth_date` DATE,
         `role` enum('user','admin') DEFAULT 'user',
         PRIMARY KEY (`id`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci");
@@ -41,6 +42,7 @@ try {
         `start_date` DATETIME NOT NULL,
         `end_date` DATETIME NOT NULL,
         `status` ENUM('draft', 'active', 'closed') DEFAULT 'draft',
+        `participant_count` int DEFAULT 0,
         `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         PRIMARY KEY (`id`),
         FOREIGN KEY (`creator_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
@@ -81,8 +83,8 @@ try {
 
     // Create default admin user if it doesn't exist
     $adminPassword = password_hash('admin123', PASSWORD_DEFAULT);
-    $stmt = $pdo->prepare("INSERT INTO users (username, password, email, firstName, lastName, role) 
-                          SELECT 'admin', :password, 'admin@example.com', 'Admin', 'User', 'admin'
+    $stmt = $pdo->prepare("INSERT INTO users (username, password, email, firstName, lastName, role, birth_date) 
+                          SELECT 'admin', :password, 'admin@example.com', 'Admin', 'User', 'admin', '2000-01-01'
                           WHERE NOT EXISTS (SELECT 1 FROM users WHERE username = 'admin')");
     $stmt->execute(['password' => $adminPassword]);
 

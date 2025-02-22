@@ -58,6 +58,11 @@ $votedConsultations = $stmt->fetchAll();
 </head>
 <body class="bg-gray-100">
     <div class="container mx-auto px-4 py-8 mt-16">
+        <div class="text-right mb-4">
+            <a href="logout.php" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                Déconnexion
+            </a>
+        </div>
         <div class="grid md:grid-cols-2 gap-6">
             <div class="bg-white rounded-lg shadow-lg p-6">
                 <h2 class="text-2xl font-bold mb-4">Mes consultations créées</h2>
